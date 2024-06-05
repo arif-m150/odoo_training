@@ -1,0 +1,21 @@
+<odoo>
+    <!-- Mengcustom View Form Partner -->
+    
+    <record id="instruktur_res_partner_view_form" model="ir.ui.view">
+        <field name="name">instruktur.res.partner.view.form</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <notebook position="inside">
+                <page>
+                    <group>
+                        <field name="instructor" />
+                    </group>
+                    <group string="Daftar Sesi Mengajar">
+                        <field name="session_line" nolabel="1" colspan="2"/>
+                    </group>
+                </page>
+            </notebook>
+        </field>
+    </record>
+</odoo>

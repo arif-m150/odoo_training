@@ -1,0 +1,135 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+
+    <record model="ir.ui.view" id="training_course_view_tree">
+      <field name="name">training.course.tree</field>
+      <field name="model">training.course</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="user_id"/>
+          <field name="description"/>
+        </tree>
+      </field>
+    </record>
+
+    <record id="training_course_view_form" model="ir.ui.view">
+        <field name="name">training.course.view.form</field>
+        <field name="model">training.course</field>
+        <field name="arch" type="xml">
+            <form string="Training Course">
+                <sheet>
+                    <group>
+                        <field name="name" />
+                        <field name="user_id" />
+                    </group>
+                    <notebook>
+                        <page string="Sesi">
+                            <field name="session_line" mode="tree,form" nolabel="1">
+                                <tree string="Sesi">
+                                    <field name="name"/>
+                                    <field name="partner_id"/>
+                                    <field name="email"/>
+                                    <field name="start_date"/>
+                                    <field name="duration"/>
+                                    <field name="seats"/>
+                                </tree>
+                                <form string='Sesi'>
+                                    <group>
+                                        <field name="name"/>
+                                        <field name="partner_id"/> 
+                                        <field name="start_date"/>
+                                        <field name="duration"/>
+                                        <field name="seats"/>
+                                    </group>
+                                </form>
+                            </field>
+                        </page>
+                        <page string="Cendera Mata">
+                            <field name="product_ids" nolabel="1"/>
+                        </page>
+                        <page string="Keterangan">
+                            <group>
+                                <field name="description" />
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- actions opening views on models -->
+
+    <record model="ir.actions.act_window" id="training_course_action">
+      <field name="name">Course</field>
+      <field name="res_model">training.course</field>
+      <field name="view_mode">tree,form</field>
+      <field name="help" type="html">
+            <p name="o_view_nocontent_smiling_face">
+                Buatlah kursus pertamamu ...
+            </p>
+        </field>
+    </record>
+
+    <!-- Membuat View Tree/List Session -->
+    <record id="training_session_view_tree" model="ir.ui.view"> <field name="name">training.session.tree</field>
+        <field name="model">training.session</field>
+        <field name="arch" type="xml">
+            <tree string="session List">
+                <field name="course_id"/>
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="start_date"/>
+                <field name="duration"/>
+                <field name="seats"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Membuat View Form Session -->
+    <record id="training_session_view_form" model="ir.ui.view">
+        <field name="name">training.session.form</field>
+        <field name="model">training.session</field>
+        <field name="arch" type="xml">
+            <form string="Session Form">
+                <sheet>
+                    <group>
+                        <group string="Informasi">
+                            <field name="course_id"/>
+                            <field name="name"/>
+                            <field name="partner_id"/>
+                        </group>
+                        <group string="Jadwal">
+                            <field name="start_date"/>
+                            <field name="duration"/>
+                            <field name="seats"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Membuat Action/Event Session -->
+    <record id="training_session_action" model="ir.actions.act_window"> <field name="name">Session</field>
+        <field name="res_model">training.session</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- Top menu item -->
+
+    <menuitem name="Training" id="menu_dashboard_training"/>
+
+    <!-- menu categories -->
+
+    <menuitem name="Training" id="menu_bar_training" parent="menu_dashboard_training"/>
+    <menuitem name="Course" id="menu_item_training_course" parent="menu_bar_training"
+        action="training_course_action"/>
+
+    <!-- Membuat Menu Item Session -->
+    <menuitem id="menu_item_training_session" name="Session" parent="menu_bar_training" action="training_session_action"/>
+
+  </data>
+</odoo>
