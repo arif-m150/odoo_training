@@ -7,8 +7,10 @@
       <field name="model">training.course</field>
       <field name="arch" type="xml">
         <tree>
+          <field name="ref"/>
           <field name="name"/>
           <field name="user_id"/>
+          <field name="level"/>
           <field name="description"/>
         </tree>
       </field>
@@ -20,9 +22,20 @@
         <field name="arch" type="xml">
             <form string="Training Course">
                 <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="ref"/>
+                        </h1>
+                    </div>
+                    <group col="2" string="Informasi">
+                        <field name="name"/>
+                        <field name="color"/>
+                        <field name="level" widget="radio"/>
+                    </group>
                     <group>
-                        <field name="name" />
-                        <field name="user_id" />
+                        <separator string="Koordinator"/>
+                        <field name="user_id"/>
+                        <field name="email"/>
                     </group>
                     <notebook>
                         <page string="Sesi">
@@ -56,6 +69,11 @@
                         </page>
                     </notebook>
                 </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
             </form>
         </field>
     </record>
@@ -81,9 +99,11 @@
                 <field name="course_id"/>
                 <field name="name"/>
                 <field name="partner_id"/>
-                <field name="start_date"/>
+                <field name="start_date" string="Tanggal Mulai"/>
+                <field name="end_date"/>
                 <field name="duration"/>
                 <field name="seats"/>
+                <field name="taken_seats" widget="progressbar"/>
             </tree>
         </field>
     </record>
@@ -97,14 +117,28 @@
                 <sheet>
                     <group>
                         <group string="Informasi">
-                            <field name="course_id"/>
+                            <field name="course_id" options="{'no_create': True, 'no_edit': True, 'no_open': True}"/>/>
                             <field name="name"/>
                             <field name="partner_id"/>
+                        </group>
+                        <group string="Jadwal">
+                            <field name="start_date" string="Tanggal Mulai"/>
+                            <field name="end_date"/>
+                            <field name="duration"/>
                         </group>
                         <group string="Jadwal">
                             <field name="start_date"/>
                             <field name="duration"/>
                             <field name="seats"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="seats"/>
+                            <field name="taken_seats" widget="progressbar"/>
+                        </group>
+                        <group>
+                            <field name="attendees_count"/>
                         </group>
                     </group>
                     <notebook>

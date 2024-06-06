@@ -18,11 +18,12 @@ Module Training technical Odoo
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base','stock'],
+    'depends': ['base','stock','mail'],
 
     # always loaded
     'data': [
         'data/data.xml',
+        'data/sequence_data.xml',
         'security/ir.model.access.csv',
         'views/training_views.xml',
         'views/partner_views.xml',
