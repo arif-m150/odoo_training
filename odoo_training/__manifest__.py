@@ -26,6 +26,7 @@ Module Training technical Odoo
         'security/ir.model.access.csv',
         'views/training_views.xml',
         'views/partner_views.xml',
+        'views/menuitem.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

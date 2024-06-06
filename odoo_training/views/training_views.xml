@@ -107,6 +107,11 @@
                             <field name="seats"/>
                         </group>
                     </group>
+                    <notebook>
+                        <page string="Peserta">
+                            <field name="attendee_ids" nolabel="1"/>
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
         </field>
@@ -118,18 +123,51 @@
         <field name="view_mode">tree,form</field>
     </record>
 
-    <!-- Top menu item -->
-
-    <menuitem name="Training" id="menu_dashboard_training"/>
-
-    <!-- menu categories -->
-
-    <menuitem name="Training" id="menu_bar_training" parent="menu_dashboard_training"/>
-    <menuitem name="Course" id="menu_item_training_course" parent="menu_bar_training"
-        action="training_course_action"/>
-
-    <!-- Membuat Menu Item Session -->
-    <menuitem id="menu_item_training_session" name="Session" parent="menu_bar_training" action="training_session_action"/>
+    <!-- Membuat View Tree/List Attendee -->
+ 
+    <record id="training_attendee_view_tree" model="ir.ui.view">
+        <field name="name">training.attendee.tree</field>
+        <field name="model">training.attendee</field>
+        <field name="arch" type="xml">
+            <tree string="Attendee List">
+                <field name="name"/>
+                <field name="email"/>
+                <field name="gender"/>
+            </tree>
+        </field>
+    </record>
+    
+    <!-- Membuat View Form Attendee -->
+    
+    <record id="training_attendee_view_form" model="ir.ui.view">
+        <field name="name">training.attendee.form</field>
+        <field name="model">training.attendee</field>
+        <field name="arch" type="xml">
+            <form string="Attendee Form">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="email"/>
+                        <field name="gender" widget="radio" options="{'horizontal': True}"/>
+                        <field name="marital"/>
+                    </group>
+                    <notebook>
+                        <page string="Sesi">
+                            <field name="session_ids" nolabel="1"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    
+    <!-- Membuat Action/Event Attendee -->
+    
+    <record id="training_attendee_action" model="ir.actions.act_window">
+        <field name="name">Attendee</field>
+        <field name="res_model">training.attendee</field>
+        <field name="view_mode">tree,form</field>
+    </record>
 
   </data>
 </odoo>
