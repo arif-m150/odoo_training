@@ -4,6 +4,8 @@ from odoo import models, fields, api
 from odoo.exceptions import ValidationError
 from random import randint
 from datetime import timedelta, datetime, date
+import requests
+import json
 
 class TrainingCourse(models.Model):
     _name = 'training.course'
@@ -75,9 +77,28 @@ class TrainingSession(models.Model):
     partner_id = fields.Many2one('res.partner', string='Instruktur', domain=[('instructor', '=',True)], default=default_partner_id)
     email = fields.Char(related='partner_id.email')
     attendee_ids = fields.Many2many('training.attendee', 'session_attendee_rel', 'session_id', 'attendee_id', 'Peserta')
-    taken_seats = fields.Float('Taken Seats', compute='compute_taken_seats')
+    taken_seats = fields.Float('Taken Seats', compute='compute_taken_seats', store=True)
     end_date = fields.Date(string="Tanggal Selesai", compute='get_end_date', inverse='set_end_date', store=True)
     attendees_count = fields.Integer(string="Jumlah Peserta", compute='get_attendees_count', store=True)
+    color = fields.Integer('Color Index', default=0)
+    level = fields.Selection(string='Tingkatan', related='course_id.level')
+    state = fields.Selection([('draft', 'Draft'), ('open', 'Open'), ('done', 'Done')], string='Status', readonly=True, default='draft')
+    partner_name = fields.Char(related='partner_id.name')
+ 
+    def action_confirm(self):
+        partner = self.env['res.partner'].create({
+            'name': "Edi S."
+        })
+        self.write({'state': 'open'})
+      
+    def action_cancel(self):
+        self.write({'state': 'draft'})
+      
+    def action_close(self):
+        data = {}
+        url = "https://reqres.in/api/unknown"
+        response = requests.get(url, data=json.dumps (data))
+        self.write({'state': 'done'})
     
     @api.constrains('seats','attendee_ids')
     def check_seats_and_attendees(self):
@@ -96,8 +117,13 @@ class TrainingSession(models.Model):
         for sesi in self:
             sesi.attendees_count = len(sesi.attendee_ids)
 
+    def cron_expire_session(self):
+        now = fields.Date.today()
+        expired_ids = self.search([('end_date', '<', now), ('state', '=', 'open')])
+        expired_ids.write({'state': 'done'})
 
-
+    def action_print_session(self):
+        return self.env.ref('odoo_training.report_training_session_action').report_action(self)
 
 class TrainingAttendee(models.Model):
     _name = 'training.attendee'
